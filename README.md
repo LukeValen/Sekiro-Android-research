@@ -1,18 +1,18 @@
 # Sekiro Android Research
 
-Pesquisa para avaliar um port nativo ARM64 de Sekiro usando a versão de PC como referência. Autor do projeto: LukeValen.
+Research into the feasibility of a native ARM64 Android port of Sekiro, using the PC version as a reference. Project author: LukeValen.
 
-**Estado: investigação inicial. Não existe APK, engine reconstruída ou executável do jogo analisado neste repositório.**
+**Status: initial investigation. This repository has no APK or reconstructed engine, and no game executable has been analyzed yet.**
 
-## Objetivo e limites técnicos
+## Goal and technical limitations
 
-Um decompilador permite estudar o executável, mas seu pseudocódigo não recupera automaticamente o projeto C++ original nem um projeto compilável para Android. Um port nativo exigiria reconstruir e validar a lógica e adaptar gráficos, plataforma, entrada, áudio, memória, threads, arquivos e dependências.
+A decompiler helps investigate an executable, but its pseudocode does not automatically recover the original C++ project or an Android build. A native port would require reconstructing and validating the logic and adapting graphics, platform APIs, input, audio, memory, threading, file access, and dependencies.
 
-O objetivo permanece um port nativo. Wine com Box64/FEX e DXVK pode servir como referência de comportamento e desempenho, mas é execução por compatibilidade/tradução, não um port nativo.
+The goal remains a native port. Wine with Box64/FEX and DXVK may provide a behavior and performance reference, but that approach runs the existing executable through compatibility and translation layers.
 
-## Primeiro passo no Termux
+## First step in Termux
 
-Use sua instalação de PC como entrada local. O analisador não executa nem modifica o jogo e usa apenas a biblioteca padrão do Python.
+Use your own PC installation as local input. The inspector does not execute or modify the game and uses only the Python standard library.
 
 ```sh
 pkg install python git
@@ -20,18 +20,18 @@ termux-setup-storage
 python tools/inspect_pe.py '/storage/emulated/0/Download/Sekiro/sekiro.exe' --output analysis-local/executable.json
 ```
 
-O caminho é um exemplo: ajuste para sua pasta. O relatório contém SHA-256, formato PE, arquitetura e seções. Ele não contém funções decompiladas nem uma lista de dependências. Para o levantamento de imports, use posteriormente `llvm-readobj --coff-imports` com uma versão de LLVM disponível no seu ambiente ou a janela de imports do Ghidra.
+The path is an example; adjust it to your folder. The report includes SHA-256, PE format, architecture, and sections. It does not contain decompiled functions or a dependency list. Later, inspect imports using `llvm-readobj --coff-imports` with an LLVM version available in your environment, or Ghidra's import view.
 
-Leia [a pesquisa](docs/RESEARCH.md), [o plano](docs/ROADMAP.md) e [como publicar](docs/GITHUB.md).
+Read the [research](docs/RESEARCH.md), [roadmap](docs/ROADMAP.md), and [repository instructions](docs/GITHUB.md).
 
-## Arquivos locais
+## Local files
 
-Mantenha executáveis, DLLs, arquivos do jogo, saves, dumps, projetos Ghidra e resultados de decompilação fora dos commits. Este repositório contém documentação e ferramentas originais; o usuário fornece seus próprios arquivos localmente.
+Keep executables, DLLs, game assets, saves, dumps, Ghidra projects, and decompilation output out of commits. This repository contains documentation and original tools; users supply their own game files locally.
 
-## Verificação das ferramentas
+## Tool verification
 
 ```sh
 python -m unittest discover -s tests -v
 ```
 
-Esses testes verificam o analisador com arquivos sintéticos. Não comprovam compatibilidade com Sekiro nem viabilidade do port.
+These tests verify the inspector against synthetic files. They do not establish Sekiro compatibility or port feasibility.

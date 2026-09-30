@@ -1,46 +1,46 @@
-# Pesquisa técnica — 30/09/2026
+# Technical research — 2026-09-30
 
-## Resultado
+## Findings
 
-A pesquisa pública realizada não identificou uma decompilação completa e recompilável de Sekiro nem um port nativo aberto para Android. Isso é um resultado limitado de busca, não prova de inexistência. Nenhum executável foi fornecido ou analisado; arquitetura, imports e middleware da cópia do usuário ainda precisam ser confirmados.
+The public search performed did not identify a complete, recompilable Sekiro decompilation or an open native Android port. This is a limited search result, not proof that none exists. No executable has been supplied or analyzed; the architecture, imports, and middleware used by the user's copy still need verification.
 
-## Ferramentas e o que realmente entregam
+## Tools and their actual scope
 
-| Ferramenta | Utilidade | Limite para este projeto |
+| Tool | Purpose | Limitation for this project |
 | --- | --- | --- |
-| [Ghidra](https://github.com/NationalSecurityAgency/ghidra) | Disassembly, decompilação e investigação do executável | Não transforma automaticamente pseudocódigo em engine portátil |
-| [UXM](https://github.com/JKAnderson/UXM) | Desempacotamento de arquivos e ajuste do carregamento de arquivos soltos em Sekiro | Não decompila a engine; não precisamos aplicar patches nesta fase |
-| [SoulsFormats](https://github.com/JKAnderson/SoulsFormats) | Biblioteca .NET para ler/escrever formatos FromSoftware | Ler formatos não implementa renderização, gameplay ou animação |
-| [DSLuaDecompiler](https://github.com/katalash/DSLuaDecompiler) | Decompilação Lua/HavokScript de IA e scripts de comportamento | Trabalha com scripts; não é uma decompilação do executável inteiro |
-| [Box64](https://github.com/ptitSeb/box64) | Execução de programas Linux x86-64 em outras arquiteturas, com suporte a uso com Wine | Depende de integração com o ambiente; não gera código fonte do jogo |
-| [FEX](https://github.com/FEX-Emu/FEX) | Emulação de aplicações x86/x86-64 em Linux ARM64 | Não é um APK de Sekiro nem solução Android pronta por si só |
-| [DXVK](https://github.com/doitsujin/dxvk) | Tradução Direct3D 8/9/10/11 para Vulkan em conjunto com Wine | Exige driver Vulkan e recursos adequados; não substitui a tradução de CPU |
+| [Ghidra](https://github.com/NationalSecurityAgency/ghidra) | Disassembly, decompilation, and executable investigation | Does not automatically turn pseudocode into a portable engine |
+| [UXM](https://github.com/JKAnderson/UXM) | Unpacks game archives and adjusts loose-file loading for Sekiro | Does not decompile the engine; patches are unnecessary at this stage |
+| [SoulsFormats](https://github.com/JKAnderson/SoulsFormats) | .NET library for reading and writing FromSoftware formats | Reading formats does not implement rendering, gameplay, or animation |
+| [DSLuaDecompiler](https://github.com/katalash/DSLuaDecompiler) | Decompiles Lua/HavokScript AI and behavior scripts | Handles scripts, not the entire game executable |
+| [Box64](https://github.com/ptitSeb/box64) | Runs Linux x86-64 programs on other architectures, with support for use with Wine | Requires environment integration; does not generate the game's source code |
+| [FEX](https://github.com/FEX-Emu/FEX) | Emulates x86/x86-64 applications on ARM64 Linux | Is neither a Sekiro APK nor a complete Android solution by itself |
+| [DXVK](https://github.com/doitsujin/dxvk) | Translates Direct3D 8/9/10/11 to Vulkan alongside Wine | Requires an appropriate Vulkan driver and features; does not replace CPU translation |
 
-## Três caminhos diferentes
+## Three different approaches
 
-1. **Compatibilidade:** preservar o executável, traduzir instruções de CPU e APIs. É o caminho de menor escopo para tentar jogar, mas não atende sozinho ao objetivo nativo.
-2. **Reconstrução nativa:** estudar funções e formatos, escrever implementações portáveis e validar resultados em módulos. É o objetivo investigado e tem escopo muito maior.
-3. **Recompilação estática:** traduzir o binário para outra representação compilável. Ainda exige resolver chamadas indiretas, ABI, bibliotecas, sistema operacional e gráficos. Não foi encontrada uma ferramenta demonstrada que faça isso de ponta a ponta para Sekiro.
+1. **Compatibility:** preserve the executable and translate CPU instructions and APIs. This is a smaller-scope approach to attempting to run the game, but does not fulfill the native-port goal by itself.
+2. **Native reconstruction:** study functions and formats, write portable implementations, and validate them module by module. This is the project's goal and involves much greater scope.
+3. **Static recompilation:** translate the binary into another compilable representation. Indirect calls, ABI, libraries, OS APIs, and graphics still require solutions. The search did not identify a tool demonstrated to do this end to end for Sekiro.
 
-Essas conclusões são avaliação técnica a partir das capacidades documentadas das ferramentas, não resultados de um teste do jogo.
+These conclusions are technical assessments based on documented tool capabilities, not game test results.
 
-## Por que decompilar não basta
+## Why decompilation alone is insufficient
 
-O executável não fornece automaticamente nomes, tipos, organização original, configurações de build e bibliotecas fonte. Otimização mistura ou remove abstrações. Além da lógica reconstruída, será necessário investigar convenções de chamada, layouts de objetos, ponteiros e callbacks, sincronização, SIMD, shaders, dependências e formatos.
+An executable does not automatically provide original names, types, project organization, build settings, or library sources. Optimization merges or removes abstractions. Beyond reconstructed logic, investigation must cover calling conventions, object layouts, pointers and callbacks, synchronization, SIMD, shaders, dependencies, and file formats.
 
-Não presumir que a posse dos assets ou o funcionamento de um visualizador implica uma engine funcional. Não estimar FPS ou prazo sem provas de execução.
+Having assets or a working viewer does not establish a functioning engine. Do not estimate FPS or a delivery date without execution evidence.
 
-## Trabalhando pelo Android
+## Working from Android
 
-O Termux é suficiente para começar com Git, Python, hashes e relatórios estáticos pequenos. A análise completa de um executável grande com Ghidra e a validação dinâmica serão mais práticas em um computador ou ambiente remoto adequado. Não foi verificado um fluxo completo de Ghidra para este jogo rodando somente no telefone. Builds Android poderão ser feitos por CI quando houver código nativo suficiente para compilar; adicionar um workflow agora não produziria o jogo.
+Termux is sufficient to start with Git, Python, hashes, and small static reports. Full Ghidra analysis of a large executable and dynamic validation are more practical on a computer or suitable remote environment. A complete phone-only Ghidra workflow for this game has not been verified. Android builds can run in CI once sufficient native code exists; adding a workflow now would not produce the game.
 
-## Evidências necessárias antes de escolher a arquitetura
+## Evidence needed before selecting an architecture
 
-- SHA-256 e edição/build exata do executável.
-- Formato, arquitetura, seções, imports normais e imports atrasados.
-- Bibliotecas e componentes efetivamente usados, incluindo cargas dinâmicas.
-- Recursos gráficos observados em logs/capturas; requisitos publicados não bastam para isso.
-- Dispositivo alvo, Android, RAM, GPU e driver Vulkan confirmado.
-- Uma função pequena cujo comportamento possa ser comparado com uma implementação original.
+- SHA-256 and the executable's exact edition/build.
+- Format, architecture, sections, normal imports, and delay-loaded imports.
+- Libraries and components actually used, including dynamic loading.
+- Graphics features observed in logs or captures; published requirements alone are insufficient.
+- Target device, Android version, RAM, GPU, and verified Vulkan driver.
+- A small function whose behavior can be compared against an original implementation.
 
-As URLs acima foram consultadas como fontes primárias. Nenhuma das ferramentas foi incorporada, instalada ou testada com o jogo nesta fase.
+The URLs above were consulted as primary sources. None of these tools has been incorporated, installed, or tested with the game during this phase.

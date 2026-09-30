@@ -1,22 +1,22 @@
-# Plano de investigação do port nativo
+# Native port investigation roadmap
 
-Cada fase termina em uma evidência verificável. Não pular diretamente para geração de APK.
+Each phase ends with verifiable evidence. Do not jump directly to APK generation.
 
-| Fase | Trabalho | Critério de conclusão |
+| Phase | Work | Completion criterion |
 | --- | --- | --- |
-| 0 — Identificação | Registrar hash, formato e versão da cópia de PC | Relatório local reproduzível do executável |
-| 1 — Dependências | Imports, cargas dinâmicas, componentes de plataforma e gráficos | Lista separando itens observados, inferidos e desconhecidos |
-| 2 — Análise piloto | Selecionar função pura pequena, estudar assembly/pseudocódigo e escrever implementação própria | Comparação documentada de entradas e saídas com referência |
-| 3 — Dados | Selecionar formato simples e construir leitor/visualizador | Fixtures sintéticas no CI e arquivos reais somente localmente |
-| 4 — Base Android | Criar host ARM64 para módulos originais com logging e entrada | Build Android que executa um módulo validado; ainda não é o jogo |
-| 5 — Gráficos | Escolher estratégia após medir shaders, passes e dependências | Cena mínima reproduzida e comparada com referência |
-| 6 — Sistemas | Avaliar animação, física, scripts, áudio, streaming e saves separadamente | Provas funcionais por sistema antes de integração |
-| 7 — Integração | Integrar somente componentes cuja reconstrução foi validada | Cena jogável e testes de comportamento/desempenho |
+| 0 — Identification | Record the PC executable's hash, format, and version | Reproducible local executable report |
+| 1 — Dependencies | Investigate imports, dynamic loading, platform components, and graphics | List distinguishing observed facts, inferences, and unknowns |
+| 2 — Pilot analysis | Select a small pure function, study assembly/pseudocode, and write an original implementation | Documented comparison of inputs and outputs against a reference |
+| 3 — Data | Select a simple format and build a reader/viewer | Synthetic fixtures in CI; real game files remain local |
+| 4 — Android foundation | Create an ARM64 host for original modules with logging and input | Android build running a validated module; not yet the game |
+| 5 — Graphics | Choose a strategy after investigating shaders, passes, and dependencies | Minimal scene reproduced and compared against a reference |
+| 6 — Systems | Evaluate animation, physics, scripts, audio, streaming, and saves separately | Functional evidence per system before integration |
+| 7 — Integration | Integrate only components whose reconstruction has been validated | Playable scene with behavior and performance tests |
 
-## Próxima ação concreta
+## Next concrete action
 
-Executar `tools/inspect_pe.py` na cópia local. Sem esse arquivo, nenhum endereço, função ou dependência específica pode ser afirmado. Em seguida levantar imports com Ghidra/LLVM e decidir qual função pequena investigar primeiro.
+Run `tools/inspect_pe.py` on the local copy. Without that executable, no specific address, function, or dependency can be asserted. Then inspect imports with Ghidra/LLVM and choose the first small function to investigate.
 
-## Registro de execução por compatibilidade, caso usado como referência
+## Compatibility execution record, if used as a reference
 
-Anotar dispositivo, Android, runtime, tradutor de CPU, versão Wine, DXVK, driver, hash do executável, resolução, preset, logs, cenário e duração. Separar crash de CPU, falha de API, erro Vulkan, shader, entrada e falta de memória. Não usar apenas "abre/não abre" como evidência de viabilidade.
+Record the device, Android version, runtime, CPU translator, Wine version, DXVK version, driver, executable hash, resolution, preset, logs, test scene, and duration. Distinguish CPU crashes, API failures, Vulkan errors, shader problems, input issues, and memory exhaustion. A simple “launches/does not launch” result is insufficient evidence of feasibility.
